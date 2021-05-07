@@ -117,6 +117,13 @@ function itemToObject(item) {
       
       break;
       
+    case FormApp.ItemType.SCALE:
+      data.choices = [];
+      for(let i=typedItem.getLowerBound();i<=typedItem.getUpperBound();i++) {
+        data.choices.push(i)
+      }
+      break;
+      
     case FormApp.ItemType.PAGE_BREAK:
       data.pageNavigationType = typedItem.getPageNavigationType().toString();
       break;
