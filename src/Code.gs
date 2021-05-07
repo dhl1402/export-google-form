@@ -97,6 +97,7 @@ function itemToObject(item) {
       data.choices = typedItem.getChoices().map(function(choice) {
         return choice.getValue();
       });
+      data.hasOtherOption = typedItem.hasOtherOption();
       break;
     
     case FormApp.ItemType.IMAGE:
