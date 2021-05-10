@@ -4,7 +4,7 @@
 
 
 // Sample URL. Note that this must be authenticated with the current user.
-var URL = "<your-form-editing-url-here>";
+var URL = "https://docs.google.com/forms/d/12aK1zLMh3O5mSBoFJyWgsDh9-RlmvMYm7jMJ8wtvKU8/edit";
 
 /**
  * Converts the given form URL into a JSON object.
@@ -16,7 +16,7 @@ function main() {
   
   var result = {
     "metadata": getFormMetadata(form),
-    "items": items.map(itemToObject),
+    "items": items.flatMap(itemToObject),
     "count": items.length
   };
   
@@ -116,12 +116,21 @@ function itemToObject(item) {
       };
       
       break;
-      
+
     case FormApp.ItemType.SCALE:
       data.choices = [];
       for(let i=typedItem.getLowerBound();i<=typedItem.getUpperBound();i++) {
         data.choices.push(i)
       }
+      break;
+    
+    case FormApp.ItemType.GRID:
+    case FormApp.ItemType.CHECKBOX_GRID:
+      data.choices = typedItem.getColumns();
+      data.subQuestions = typedItem.getRows().map(r => ({
+        type: FormApp.ItemType.GRID,
+        title: r,
+      }));
       break;
       
     case FormApp.ItemType.PAGE_BREAK:
