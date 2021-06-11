@@ -1,10 +1,5 @@
-// Steven Schmatz
-// Humanitas Labs
-// 13 October, 2016.
-
-
-// Sample URL. Note that this must be authenticated with the current user.
-var URL = "https://docs.google.com/forms/d/12aK1zLMh3O5mSBoFJyWgsDh9-RlmvMYm7jMJ8wtvKU8/edit";
+var URL = "https://docs.google.com/forms/d/1mj9KNW6v5Jba0vTdpbxvvD9KuZ4NzkLm8Kxp_x0PLUM/edit";
+let category = ''
 
 /**
  * Converts the given form URL into a JSON object.
@@ -41,6 +36,7 @@ function getFormMetadata(form) {
   };
 }
 
+
 /**
  * Returns an Object for a given Item.
  * @param item: Item
@@ -51,7 +47,8 @@ function itemToObject(item) {
   
   data.type = item.getType().toString();
   data.title = item.getTitle();
-  
+  data.category = category;
+
   // Downcast items to access type-specific properties
   
   var itemTypeConstructorName = snakeCaseToCamelCase("AS_" + item.getType().toString() + "_ITEM");  
@@ -136,6 +133,9 @@ function itemToObject(item) {
     case FormApp.ItemType.PAGE_BREAK:
       data.pageNavigationType = typedItem.getPageNavigationType().toString();
       break;
+
+    case FormApp.ItemType.SECTION_HEADER:
+      category = data.title;
       
     default:
       break;
